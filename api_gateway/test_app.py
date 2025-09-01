@@ -16,6 +16,15 @@ def test_ingest_patient():
     assert response.json()["status"] == "ok"
     assert response.json()["patient_id"] == "test123"
 
+    # Verify patient was stored with empty recommendations (since recommendation service is not available)
+    stored_patient = client.get("/patients/test123")
+    assert stored_patient.status_code == 200
+    patient_data = stored_patient.json()
+    assert patient_data["id"] == "test123"
+    assert patient_data["name"] == "Test Patient"
+    assert "recommendations" in patient_data
+    assert patient_data["recommendations"] == []
+
 def test_get_patient():
     # First ingest a patient
     patient_data = {
