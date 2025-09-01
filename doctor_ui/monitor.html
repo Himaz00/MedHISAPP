@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>JSON Monitor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .patient { border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    .patient h3 { margin: 0; }
+  </style>
+</head>
+<body>
+  <h1>Sample Patients Monitor</h1>
+  <div>
+    <input type="file" id="fileInput" accept=".json">
+    <button onclick="uploadFile()">Upload JSON</button>
+  </div>
+  <!-- <div id="patients"></div> -->
+
+  <script>
+    let previousData = null;
+
+    async function loadPatients() {
+      try {
+        const res = await fetch('http://localhost:5000/sample-patients');
+        const data = await res.json();
+        const currentData = JSON.stringify(data);
+        if (currentData !== previousData) {
+          previousData = currentData;
+          displayPatients(data);
+        }
+      } catch (e) {
+        console.error('Error loading patients:', e);
+      }
+    }
+
+    // function displayPatients(data) {
+    //   const container = document.getElementById('patients');
+    //   container.innerHTML = '';
+    //   data.patients.forEach(p => {
+    //     const div = document.createElement('div');
+    //     div.className = 'patient';
+    //     div.innerHTML = `
+    //       <h3>${p.name} (${p.id})</h3>
+    //       <p>DOB: ${p.dob}</p>
+    //       <p>Diagnoses: ${p.diagnoses.join(', ')}</p>
+    //     `;
+    //     container.appendChild(div);
+    //   });
+    // }
+
+    async function uploadFile() {
+      const file = document.getElementById('fileInput').files[0];
+      if (!file) {
+        alert('Please select a file');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const res = await fetch('http://localhost:5000/upload-json', {
+          method: 'POST',
+          body: formData
+        });
+        if (res.ok) {
+          alert('File uploaded successfully');
+          loadPatients(); // Reload immediately
+        } else {
+          alert('Upload failed');
+        }
+      } catch (e) {
+        console.error('Upload error:', e);
+        alert('Upload error');
+      }
+    }
+
+    loadPatients();
+    // setInterval(loadPatients, 5000); // Poll every 5 seconds - DISABLED
+  </script>
+</body>
+</html>

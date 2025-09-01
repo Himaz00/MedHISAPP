@@ -1,0 +1,38 @@
+name: CI Build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_RECOMM: demo/recommendation:latest
+      IMAGE_API: demo/api_gateway:latest
+      IMAGE_HIS: demo/his_adapter:latest
+      IMAGE_UI: demo/doctor_ui:latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Build Docker images
+        run: |
+          docker build -t $IMAGE_RECOMM ./recommendation_service
+          docker build -t $IMAGE_API ./api_gateway
+          docker build -t $IMAGE_HIS ./his_adapter
+          docker build -t $IMAGE_UI ./doctor_ui
+
+      # - name: Push to Docker Hub
+      #   if: false
+      #   run: |
+      #     echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      #     docker push $IMAGE_RECOMM
+      #     docker push $IMAGE_API
+      #     docker push $IMAGE_HIS
+      #     docker push $IMAGE_UI

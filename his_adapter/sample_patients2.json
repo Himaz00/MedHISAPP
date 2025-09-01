@@ -1,0 +1,40 @@
+{
+  "patients": [
+    {
+      "id": "1",
+      "name": "Anna Müller",
+      "dob": "1948-05-12",
+      "diagnoses": ["Bluthochdruck"]
+    },
+    {
+      "id": "2",
+      "name": "Hans Schmidt",
+      "dob": "1965-03-22",
+      "diagnoses": ["Diabetes", "Bluthochdruck"]
+    },
+    {
+      "id": "3",
+      "name": "Lisa Wagner",
+      "dob": "1978-11-15",
+      "diagnoses": ["Asthma"]
+    },
+    {
+      "id": "4",
+      "name": "Karl Becker",
+      "dob": "1952-07-08",
+      "diagnoses": ["Herzkrankheit", "Bluthochdruck"]
+    },
+    {
+      "id": "5",
+      "name": "Maria Fischer",
+      "dob": "1990-01-30",
+      "diagnoses": ["Migräne"]
+    },
+    {
+      "id": "6",
+      "name": "Lia Löwe",
+      "dob": "1996-02-22",
+      "diagnoses": ["Migräne"]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  recommendation_service:
+    build: ./recommendation_service
+    container_name: recommendation_service
+    ports:
+      - "8001:8001"
+
+  api_gateway:
+    build: ./api_gateway
+    container_name: api_gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - recommendation_service
+
+  his_adapter:
+    build: ./his_adapter
+    container_name: his_adapter
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./his_adapter/sample_patients.json:/app/sample_patients.json
+    depends_on:
+      - api_gateway
+
+  doctor_ui:
+    build: ./doctor_ui
+    container_name: doctor_ui
+    ports:
+      - "8080:80"
+    depends_on:
+      - api_gateway
