@@ -28,6 +28,24 @@ jobs:
           docker build -t $IMAGE_HIS ./his_adapter
           docker build -t $IMAGE_UI ./doctor_ui
 
+      - name: Install dependencies and run tests for recommendation_service
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r recommendation_service/requirements.txt
+          pytest recommendation_service/test_app.py
+
+      - name: Install dependencies and run tests for api_gateway
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r api_gateway/requirements.txt
+          pytest api_gateway/test_app.py
+
+      - name: Install dependencies and run tests for his_adapter
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r his_adapter/requirements.txt
+          pytest his_adapter/test_app.py
+
       # - name: Push to Docker Hub
       #   if: false
       #   run: |
